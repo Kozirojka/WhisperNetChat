@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhisperNet.API", "WhisperNet.API\WhisperNet.API.csproj", "{C0A3B380-B2FA-4F65-94A0-7FA1222D5C21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhisperNet.Infrastructure", "WhisperNet.Infrastructure\WhisperNet.Infrastructure.csproj", "{5138931F-D0D4-44F6-B918-1DE989C8F252}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhisperNet.Domain", "WhisperNet.Domain\WhisperNet.Domain.csproj", "{A66081B3-C674-443A-9321-46F5C93C5148}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{C0A3B380-B2FA-4F65-94A0-7FA1222D5C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0A3B380-B2FA-4F65-94A0-7FA1222D5C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0A3B380-B2FA-4F65-94A0-7FA1222D5C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5138931F-D0D4-44F6-B918-1DE989C8F252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5138931F-D0D4-44F6-B918-1DE989C8F252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5138931F-D0D4-44F6-B918-1DE989C8F252}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5138931F-D0D4-44F6-B918-1DE989C8F252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A66081B3-C674-443A-9321-46F5C93C5148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A66081B3-C674-443A-9321-46F5C93C5148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A66081B3-C674-443A-9321-46F5C93C5148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A66081B3-C674-443A-9321-46F5C93C5148}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
