@@ -2,10 +2,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WhisperNet.Domain;
+using WhisperNet.Domain.Entities;
+using WhisperNet.Infrastructure;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 using LoginRequest = WhisperNet.Domain.LoginRequest;
 
@@ -13,7 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JWT"));
 
+builder.Services.AddDbContext<ApplicationDbContext>(o =>
+{
+    o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(o =>
 {
@@ -52,11 +63,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapGet("/protected", () => "Hello World!").RequireAuthorization().WithOpenApi();
-
-
-app.MapGet("/public", () => "Hello World!").AllowAnonymous().WithOpenApi();
 
 
 
