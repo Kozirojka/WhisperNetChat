@@ -53,10 +53,12 @@ public static class LoginEndpoints
         
         var tokenString = service.GenerateToken(model.Email, "User");
         
-        return Results.Ok(() =>
+        //Тут проблема була у тому, що я
+        //створював лямбда функцію і хотів її передати
+        return Results.Ok(new
         {
-            var token = tokenString;
-            var name = "User successfully was added to db and registered";
+             token = tokenString,
+             name = "User successfully was added to db and registered",
         });
     }
     
