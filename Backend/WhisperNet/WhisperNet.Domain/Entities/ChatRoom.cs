@@ -2,8 +2,8 @@ namespace WhisperNet.Domain.Entities;
 
 public class ChatRoom
 {
-    public required string Id { get; set; }
-    public ICollection<ChatParticipants> UserChats { get; set; } = new List<ChatParticipants>();
+    public int Id { get; set; }
+    //public ICollection<ChatParticipants> UserChats { get; set; } = new List<ChatParticipants>();
     
     
     public bool IsPrivate { get; set; }

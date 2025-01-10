@@ -25,8 +25,4 @@
       <ProjectReference Include="..\WhisperNet.Infrastructure\WhisperNet.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Endpoints\" />
-    </ItemGroup>
-
 </Project>
