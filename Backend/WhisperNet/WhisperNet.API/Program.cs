@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WhisperNet.API.Endpoints.feature;
 using WhisperNet.API.Endpoints.Login;
 using WhisperNet.API.Extensions;
 using WhisperNet.Domain;
@@ -40,20 +41,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//     try
-//     {
-//         var context = services.GetRequiredService<ApplicationDbContext>();
-//         context.Database.Migrate();
-//     }
-//     catch (Exception ex)
-//     { 
-//         var logger = services.GetRequiredService<ILogger<Program>>();
-//         logger.LogError(ex, "An error occurred during migration.");
-//     }
-// }
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
@@ -61,7 +48,7 @@ app.UseAuthorization();
 
 
 app.MapLoginEndpoints();
-
+app.MapChatEndpoints();
 
 app.Run();
 
