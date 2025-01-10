@@ -1,9 +1,7 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using WhisperNet.Domain;
+using Microsoft.AspNetCore.Identity;
+using WhisperNet.Domain.Entities;
+using WhisperNet.Infrastructure.Services.Interfaces;
+using LoginRequest = WhisperNet.Domain.LoginRequest;
 
 namespace WhisperNet.API.Endpoints.Login;
 
@@ -12,37 +10,60 @@ public static class LoginEndpoints
     public static void MapLoginEndpoints(this WebApplication app)
     {
         app.MapPost("/login", HandleLogin).AllowAnonymous();
+        app.MapPost("/register", HandleRegister).AllowAnonymous();
     }
 
-    private static IResult HandleLogin(LoginRequest request, IConfiguration configuration)
+    private static async Task<IResult> HandleRegister(RegisterRequest model,
+        IJwtTokenService service, 
+        UserManager<ApplicationUser> userManager, 
+        SignInManager<ApplicationUser> signInManager)
     {
-        
-        var claims = new[]
+
+
+        if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
         {
-            new Claim(JwtRegisteredClaimNames.Sub, request.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("role", "User")
+            return Results.BadRequest("Problem with password or email.");
+        }
+
+        var newRegisterUser = new ApplicationUser()
+        {
+            Email = model.Email,
+            UserName = model.Email,
+            FirstName = model.FirstName, 
+            LastName = model.LastName
         };
         
-        var jwtSettings = configuration.GetSection("JWT").Get<JwtSettings>();
-        if (jwtSettings == null)
+        var doesUserExist = userManager.FindByEmailAsync(model.Email).Result;
+        
+        if (doesUserExist != null)
         {
-            throw new InvalidOperationException("JWT settings are not configured correctly.");
+            return Results.Problem("User not found.");
         }
         
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: jwtSettings.Issuer,
-            audience: jwtSettings.Audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(60),
-            signingCredentials: creds
-        );
         
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+        var result = userManager.CreateAsync(newRegisterUser, model.Password).Result;
 
+        if (!result.Succeeded)
+        {
+            return Results.BadRequest(result.Errors);
+        }
+        
+        await userManager.AddToRoleAsync(newRegisterUser, "User");
+        
+        
+        var tokenString = service.GenerateToken(model.Email, "User");
+        
+        return Results.Ok(() =>
+        {
+            var token = tokenString;
+            var name = "User successfully was added to db and registered";
+        });
+    }
+    
+    private static IResult HandleLogin(LoginRequest request, IJwtTokenService _service)
+    {
+        var tokenString = _service.GenerateToken(request.Email, "User");
+        
         return Results.Ok(tokenString);
     }
 }
