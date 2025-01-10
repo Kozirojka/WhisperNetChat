@@ -62,8 +62,15 @@ public static class LoginEndpoints
         });
     }
     
-    private static IResult HandleLogin(LoginRequest request, IJwtTokenService _service)
+    private static IResult HandleLogin(LoginRequest request, IJwtTokenService _service, UserManager<ApplicationUser> userManager)
     {
+        var result = userManager.FindByEmailAsync(request.Email).Result;
+
+        if (result == null)
+        {
+            return Results.NotFound("User not found. Please create a new user");
+        }
+        
         var tokenString = _service.GenerateToken(request.Email, "User");
         
         return Results.Ok(tokenString);
