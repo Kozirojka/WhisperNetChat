@@ -1,6 +1,6 @@
-namespace WhisperNet.API.Endpoints.Login;
+namespace WhisperNet.Infrastructure.Dtos.RegisterHandlerDto;
 
-public class RegisterRequest
+public class RegisterRequestDto
 {
     public string Email { get; set; }
     public string FirstName { get; set; }

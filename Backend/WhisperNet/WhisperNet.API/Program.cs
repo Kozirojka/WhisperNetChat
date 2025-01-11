@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WhisperNet.API.Endpoints.feature;
-using WhisperNet.API.Endpoints.Login;
+using WhisperNet.API.Endpoints.LoginRegister;
 using WhisperNet.API.Extensions;
 using WhisperNet.Domain;
 using WhisperNet.Domain.Entities;

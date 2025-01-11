@@ -2,6 +2,7 @@ namespace WhisperNet.API.Endpoints.feature;
 
 public static class ChatEndpoints
 {
+    // добавити sqrs та використовувати mediatR 
     public static void MapChatEndpoints(this WebApplication app)
     {
         app.MapPost("/chat", () => "Create Chat!");
@@ -11,4 +12,7 @@ public static class ChatEndpoints
         app.MapPut("/chat/delete/{userId}", () => "Delete user!").RequireAuthorization("Admin");
         app.MapPut("/chat/update/{roles}/{userId}", () => "Update user!").RequireAuthorization("Admin");
     }
+    
+    
+    
 }

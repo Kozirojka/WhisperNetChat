@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using WhisperNet.Domain.Entities;
+using WhisperNet.Infrastructure.Dtos.RegisterHandlerDto;
 using WhisperNet.Infrastructure.Services.Interfaces;
 using LoginRequest = WhisperNet.Domain.LoginRequest;
 
-namespace WhisperNet.API.Endpoints.Login;
+namespace WhisperNet.API.Endpoints.LoginRegister;
 
 public static class LoginEndpoints
 {
@@ -13,7 +14,7 @@ public static class LoginEndpoints
         app.MapPost("/register", HandleRegister).AllowAnonymous();
     }
 
-    private static async Task<IResult> HandleRegister(RegisterRequest model,
+    private static async Task<IResult> HandleRegister(RegisterRequestDto model,
         IJwtTokenService service, 
         UserManager<ApplicationUser> userManager, 
         SignInManager<ApplicationUser> signInManager)
@@ -25,13 +26,7 @@ public static class LoginEndpoints
             return Results.BadRequest("Problem with password or email.");
         }
 
-        var newRegisterUser = new ApplicationUser()
-        {
-            Email = model.Email,
-            UserName = model.Email,
-            FirstName = model.FirstName, 
-            LastName = model.LastName
-        };
+        var newRegisterUser = model.ToApplicationUser();
         
         var doesUserExist = userManager.FindByEmailAsync(model.Email).Result;
         
@@ -53,8 +48,6 @@ public static class LoginEndpoints
         
         var tokenString = service.GenerateToken(model.Email, "User");
         
-        //Тут проблема була у тому, що я
-        //створював лямбда функцію і хотів її передати
         return Results.Ok(new
         {
              token = tokenString,
