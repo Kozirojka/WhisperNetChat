@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhisperNet.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhisperNet.Domain", "WhisperNet.Domain\WhisperNet.Domain.csproj", "{A66081B3-C674-443A-9321-46F5C93C5148}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhisperNet.Application", "WhisperNet.Application\WhisperNet.Application.csproj", "{E9C5B534-BE01-4FCF-8B28-F3E5F8AC432C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{A66081B3-C674-443A-9321-46F5C93C5148}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A66081B3-C674-443A-9321-46F5C93C5148}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A66081B3-C674-443A-9321-46F5C93C5148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9C5B534-BE01-4FCF-8B28-F3E5F8AC432C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9C5B534-BE01-4FCF-8B28-F3E5F8AC432C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9C5B534-BE01-4FCF-8B28-F3E5F8AC432C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9C5B534-BE01-4FCF-8B28-F3E5F8AC432C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

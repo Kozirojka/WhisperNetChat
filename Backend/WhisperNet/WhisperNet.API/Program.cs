@@ -1,8 +1,10 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WhisperNet.API.Endpoints.feature;
 using WhisperNet.API.Endpoints.LoginRegister;
 using WhisperNet.API.Extensions;
+using WhisperNet.Application.Chat.CreatePrivateChat;
 using WhisperNet.Domain;
 using WhisperNet.Domain.Entities;
 using WhisperNet.Infrastructure;
@@ -17,6 +19,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
 {
     o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(CreateChatCommandHandler).Assembly);
+});
+
 
 
 
