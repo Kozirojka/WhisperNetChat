@@ -1,18 +1,16 @@
+using WhisperNet.API.Interfaces;
+
 namespace WhisperNet.API.Endpoints.feature;
 
-public static class ChatEndpoints
+public class ChatEndpoints : IEndpoint
 {
-    // добавити sqrs та використовувати mediatR 
-    public static void MapChatEndpoints(this WebApplication app)
+    public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
     {
-        app.MapPost("/chat", () => "Create Chat!");
-        app.MapGet("/chat", () => "Get chat that have user!");
-        app.MapDelete("/chat", () => "Delete Chat!");
+        endpoints.MapPost("/chat", () => "Create Chat!");
+        endpoints.MapGet("/chat", () => "Get chat that have user!");
+        endpoints.MapDelete("/chat", () => "Delete Chat!");
         
-        app.MapPut("/chat/delete/{userId}", () => "Delete user!").RequireAuthorization("Admin");
-        app.MapPut("/chat/update/{roles}/{userId}", () => "Update user!").RequireAuthorization("Admin");
+        endpoints.MapPut("/chat/delete/{userId}", () => "Delete user!").RequireAuthorization("Admin");
+        endpoints.MapPut("/chat/update/{roles}/{userId}", () => "Update user!").RequireAuthorization("Admin");
     }
-    
-    
-    
 }
