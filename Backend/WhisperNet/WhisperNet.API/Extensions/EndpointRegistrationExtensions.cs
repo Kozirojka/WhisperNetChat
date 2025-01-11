@@ -4,6 +4,9 @@ namespace WhisperNet.API.Extensions;
 
 public static class EndpointRegistrationExtensions
 {
+    
+    // https://bit.ly/4h1
+    // Link on topic on LinkedIn with Automatic register endpoints
     public static void RegisterAllEndpoints(this IEndpointRouteBuilder app)
     {
         var endpointDefinitions = AppDomain
@@ -14,7 +17,7 @@ public static class EndpointRegistrationExtensions
                 && !type.IsInterface && !type.IsInterface)
             .Select(Activator.CreateInstance)
             .Cast<IEndpoint>();
-
+    
 
         foreach (var endpoint in endpointDefinitions)
         {

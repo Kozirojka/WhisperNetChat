@@ -48,7 +48,8 @@ app.UseAuthorization();
 
 
 app.MapLoginEndpoints();
-app.MapChatEndpoints();
+app.RegisterAllEndpoints();
+
 
 app.Run();
 
