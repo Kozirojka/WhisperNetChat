@@ -5,6 +5,9 @@ using WhisperNet.Infrastructure.Services.Interfaces;
 
 namespace WhisperNet.API.Hubs;
 
+//Todo: ? Потрібно завтар стоврити клієнт на React та протесутвати додаток
+
+
 public class ChatHub(
     ILogger<ChatHub> logger,
     IMessageService messageService,

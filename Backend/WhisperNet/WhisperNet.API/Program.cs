@@ -26,6 +26,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 
 builder.Services.AddMongoDbServiceExtension(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
+
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -41,7 +44,7 @@ builder.Services.AddScoped<IChatService, ChatService>();
 
 
 
-builder.Services.AddJwtAuthentication(builder.Configuration);
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
