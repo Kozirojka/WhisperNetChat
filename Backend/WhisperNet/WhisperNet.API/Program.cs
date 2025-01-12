@@ -1,11 +1,8 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WhisperNet.API.Endpoints.feature;
 using WhisperNet.API.Endpoints.LoginRegister;
 using WhisperNet.API.Extensions;
 using WhisperNet.Application.Chat.CreatePrivateChat;
-using WhisperNet.Domain;
 using WhisperNet.Domain.Configurations;
 using WhisperNet.Domain.Entities;
 using WhisperNet.Infrastructure;
@@ -22,14 +19,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
 });
 
 
+builder.Services.AddMongoDbServiceExtension(builder.Configuration);
 
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(CreateChatCommandHandler).Assembly);
 });
-
-
-
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
