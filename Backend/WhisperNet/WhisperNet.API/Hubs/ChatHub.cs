@@ -25,7 +25,7 @@ public class ChatHub : Hub
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId.ToString());
     }
 
-
+    
     public async Task SendPrivateMessage(int chatId, string message)
     {
         var participantUserId = _chatService.GetParticipantByChatId(chatId);

@@ -36,9 +36,7 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<IChatService, ChatService>();
-
 
 
 
