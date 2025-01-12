@@ -7,6 +7,7 @@ using WhisperNet.Application.Chat.CreatePrivateChat;
 using WhisperNet.Domain.Configurations;
 using WhisperNet.Domain.Entities;
 using WhisperNet.Infrastructure;
+using WhisperNet.Infrastructure.Services.Chat;
 using WhisperNet.Infrastructure.Services.Interfaces;
 using WhisperNet.Infrastructure.Services.Repositories;
 

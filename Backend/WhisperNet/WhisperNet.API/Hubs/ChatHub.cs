@@ -1,40 +1,48 @@
 using Microsoft.AspNetCore.SignalR;
+using WhisperNet.Domain.DocumentEntities;
+using WhisperNet.Infrastructure.Services.Chat;
 using WhisperNet.Infrastructure.Services.Interfaces;
 
 namespace WhisperNet.API.Hubs;
 
-public class ChatHub : Hub
+public class ChatHub(
+    ILogger<ChatHub> logger,
+    IMessageService messageService,
+    IChatService chatService,
+    IUserService userService)
+    : Hub
 {
-    private readonly ILogger<ChatHub> _logger;
-    private readonly IMessageService _messageService;
-    private readonly IChatService _chatService;
-    
-    public ChatHub(ILogger<ChatHub> logger, IMessageService messageService, IChatService chatService)
-    {
-        _logger = logger;
-        _messageService = messageService;
-        _chatService = chatService;
-    }
-
-
     public async Task JoinGroup(int chatId)
     {
-        _logger.LogInformation($"Joining group {chatId}");
+        logger.LogInformation($"Joining group {chatId}");
         
         
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId.ToString());
     }
 
     
+    // ? КОРИСТУВАЧ НАДСИЛА СЮДИ
     public async Task SendPrivateMessage(int chatId, string message)
     {
-        var participantUserId = _chatService.GetParticipantByChatId(chatId);
-
+        var participantUserId = chatService.GetParticipantByChatId(chatId);
+        var senderId = userService.GetUserId(Context.User);
+        
+        
         if (participantUserId == null)
         {
-            _logger.LogInformation("There is no such user");
+            logger.LogInformation("There is no such user");
             
         }
+
+        var messageObject = new Message()
+        {
+            CreateAt = DateTime.UtcNow,
+            SenderId = senderId,
+            Text = message
+        };
+        
+        await messageService.SendMessageToMongoDb(messageObject);
+        
         // ! save message to group
         await Clients.User(participantUserId).SendAsync("ReceiveMessage", chatId, message);
     }

@@ -1,6 +1,6 @@
 using WhisperNet.Infrastructure.Services.Interfaces;
 
-namespace WhisperNet.Infrastructure.Services.Repositories;
+namespace WhisperNet.Infrastructure.Services.Chat;
 
 public class ChatService : IChatService
 {

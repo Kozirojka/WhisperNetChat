@@ -1,4 +1,4 @@
-namespace WhisperNet.Infrastructure.Services.Interfaces;
+namespace WhisperNet.Infrastructure.Services.Chat;
 
 public interface IChatService
 {
