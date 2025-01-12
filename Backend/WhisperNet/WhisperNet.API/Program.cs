@@ -9,6 +9,7 @@ using WhisperNet.Domain;
 using WhisperNet.Domain.Configurations;
 using WhisperNet.Domain.Entities;
 using WhisperNet.Infrastructure;
+using WhisperNet.Infrastructure.DbContexts.MongoDbs;
 using WhisperNet.Infrastructure.Services.Interfaces;
 using WhisperNet.Infrastructure.Services.Repositories;
 
@@ -21,6 +22,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+var mongoDbConnectionString = builder.Configuration.GetConnectionString("MongoDb");
+
+if (!string.IsNullOrEmpty(mongoDbConnectionString))
+{
+    Console.WriteLine("The mongoDbConnectionString is empty");
+}
+
+builder.Services.AddDbContext<EfCoreMongoDbContext>(x => x
+    .EnableSensitiveDataLogging().UseMongoDB(mongoDbConnectionString, "messages"));
 
 
 builder.Services.AddMediatR(cfg =>
