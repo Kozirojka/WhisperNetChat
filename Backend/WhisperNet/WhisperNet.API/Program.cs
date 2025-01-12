@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WhisperNet.API.Endpoints.LoginRegister;
 using WhisperNet.API.Extensions;
+using WhisperNet.API.Hubs;
 using WhisperNet.Application.Chat.CreatePrivateChat;
 using WhisperNet.Domain.Configurations;
 using WhisperNet.Domain.Entities;
 using WhisperNet.Infrastructure;
+using WhisperNet.Infrastructure.Services.Chat;
 using WhisperNet.Infrastructure.Services.Interfaces;
 using WhisperNet.Infrastructure.Services.Repositories;
 
@@ -24,19 +26,25 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 
 builder.Services.AddMongoDbServiceExtension(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
+
 
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(CreateChatCommandHandler).Assembly);
 });
-
-
+    
+builder.Services.AddSignalR();
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 
-builder.Services.AddJwtAuthentication(builder.Configuration);
+
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -60,6 +68,7 @@ app.UseAuthorization();
 app.MapLoginEndpoints();
 app.RegisterAllEndpoints();
 
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
 
