@@ -28,10 +28,17 @@ public class ChatHub : Hub
 
     public async Task SendPrivateMessage(int chatId, string message)
     {
-        var participantUserId = _chatService.GetParticipantsByChatId(chatId);
-        
+        var participantUserId = _chatService.GetParticipantByChatId(chatId);
+
+        if (participantUserId == null)
+        {
+            _logger.LogInformation("There is no such user");
+            
+        }
         // ! save message to group
         await Clients.User(participantUserId).SendAsync("ReceiveMessage", chatId, message);
     }
+    
+    
 }
 
