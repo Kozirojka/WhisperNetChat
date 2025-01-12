@@ -14,8 +14,9 @@ public static class MongoDbServiceExtension
 
         BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
-        var mongoDbConnectionString = configuration.GetConnectionString("MongoDb");
-        var mongoClientSettings = MongoClientSettings.FromConnectionString(mongoDbConnectionString);
+        var mongoDbConfiguration = configuration.GetSection("MongoDb");
+        var connectionString = mongoDbConfiguration["DefaultConnection"];
+        var mongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
 
         services.AddSingleton<IMongoClient>(new MongoClient(mongoClientSettings));
 
