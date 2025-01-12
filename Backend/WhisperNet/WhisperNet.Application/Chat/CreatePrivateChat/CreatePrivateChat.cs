@@ -1,7 +1,9 @@
 using MediatR;
 using WhisperNet.Application.Shared;
 using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 using WhisperNet.Domain.Entities;
+using WhisperNet.Domain.Enums;
 using WhisperNet.Infrastructure;
 
 
@@ -31,26 +33,54 @@ public sealed class CreateChatCommandHandler :
 
     public async Task<ErrorOr<CreatePrivateChatResponse>> Handle(CreatePrivateChatCommand request, CancellationToken cancellationToken)
     {
-        var newChatRoom = new ChatRoom()
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        try
         {
-            IsPrivate = true,
-            IsShared = false,
-            Created = DateTime.UtcNow
-        };
+             var newChatRoom = new ChatRoom()
+            {
+                IsPrivate = true,
+                IsShared = false,
+                Created = DateTime.UtcNow
+            };
 
-        await _dbContext.ChatRooms.AddAsync(newChatRoom, cancellationToken);
+            await _dbContext.ChatRooms.AddAsync(newChatRoom, cancellationToken);
 
-        var result = await _dbContext.SaveChangesAsync(cancellationToken);
+            var findRecipient = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == request.Recipient, cancellationToken);
+            var findSender = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == request.Sender, cancellationToken);
 
-        if (result > 0)        {
+            if (findRecipient == null || findSender == null)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                
+                return Error.NotFound("UserNotFound", "One or both users were not found.");
+            }
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            var newChatParticipants = new[]
+            {
+                ChatParticipants.CreateChatParticipant(newChatRoom, findRecipient, ChatRoomRoles.User),
+                ChatParticipants.CreateChatParticipant(newChatRoom, findSender, ChatRoomRoles.User)
+            };
+
+            _dbContext.ChatParticipants.AddRange(newChatParticipants);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            await transaction.CommitAsync(cancellationToken);
+
             var responseBack = new CreatePrivateChatResponse(
                 chatId: newChatRoom.Id.ToString(),
                 message: "Successfully saved!"
             );
 
-            return responseBack; 
+             return responseBack;
         }
-
-        return Error.Failure("ChatCreationFailed", "Nothing was saved!");
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return Error.Failure("ChatCreationFailed", $"An error occurred: {ex.Message}");
+        }
     }
 }
