@@ -1,11 +1,5 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Driver;
 using WhisperNet.API.Endpoints.LoginRegister;
 using WhisperNet.API.Extensions;
 using WhisperNet.Application.Chat.CreatePrivateChat;
@@ -24,33 +18,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
-BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-
-var mongoDbConnectionString = builder.Configuration.GetConnectionString("MongoDb");
-var mongoClientSettings = MongoClientSettings.FromConnectionString(mongoDbConnectionString);
-
-builder.Services.AddSingleton<IMongoClient>(new MongoClient(mongoClientSettings));
-
-ConventionRegistry.Register("camelCase", new ConventionPack {
-    new CamelCaseElementNameConvention()
-}, _ => true);
-
-ConventionRegistry.Register("EnumStringConvention", new ConventionPack
-{
-    new EnumRepresentationConvention(BsonType.String)
-}, _ => true);  
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 
-
-
-if (!string.IsNullOrEmpty(mongoDbConnectionString))
-{
-    Console.WriteLine("The mongoDbConnectionString is empty");
-}
-
-
-
+builder.Services.AddMongoDbServiceExtension(builder.Configuration);
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -58,11 +31,6 @@ builder.Services.AddMediatR(cfg =>
 });
 
 
-
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
