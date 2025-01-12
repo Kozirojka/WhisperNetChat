@@ -33,6 +33,8 @@ builder.Services.AddMediatR(cfg =>
 
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
