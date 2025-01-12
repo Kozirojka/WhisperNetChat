@@ -6,6 +6,7 @@ using WhisperNet.API.Endpoints.LoginRegister;
 using WhisperNet.API.Extensions;
 using WhisperNet.Application.Chat.CreatePrivateChat;
 using WhisperNet.Domain;
+using WhisperNet.Domain.Configurations;
 using WhisperNet.Domain.Entities;
 using WhisperNet.Infrastructure;
 using WhisperNet.Infrastructure.Services.Interfaces;

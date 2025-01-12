@@ -1,3 +1,5 @@
+using WhisperNet.Domain.Configurations;
+
 namespace WhisperNet.API.Extensions;
 
 using System.Text;

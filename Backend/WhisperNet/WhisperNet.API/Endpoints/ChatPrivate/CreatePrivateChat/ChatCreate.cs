@@ -1,9 +1,8 @@
 using MediatR;
-using WhisperNet.API.Endpoints.CreateChat;
 using WhisperNet.API.Interfaces;
 using WhisperNet.Application.Chat.CreatePrivateChat;
 
-namespace WhisperNet.API.Endpoints.CreatePrivateChat;
+namespace WhisperNet.API.Endpoints.ChatPrivate.CreatePrivateChat;
 
 public class ChatCreate : IEndpoint
 {

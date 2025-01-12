@@ -1,4 +1,4 @@
-namespace WhisperNet.Domain;
+namespace WhisperNet.Domain.Configurations;
 
 public class JwtSettings
 {

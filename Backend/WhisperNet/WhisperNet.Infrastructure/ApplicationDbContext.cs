@@ -19,7 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<ChatRoom> ChatRooms { get; set; }
     public DbSet<ChatParticipants> ChatParticipants { get; set; }
-
+    
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -42,7 +42,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
                 Name = "Admin",
                 NormalizedName = "ADMIN"
             }
-        );
+        );  
 
 
     }

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using WhisperNet.Domain.Entities;
 using WhisperNet.Infrastructure.Dtos.RegisterHandlerDto;
 using WhisperNet.Infrastructure.Services.Interfaces;
-using LoginRequest = WhisperNet.Domain.LoginRequest;
+using LoginRequest = WhisperNet.Infrastructure.Dtos.LoginRequest;
 
 namespace WhisperNet.API.Endpoints.LoginRegister;
 
@@ -53,7 +53,7 @@ public static class LoginEndpoints
              token = tokenString,
              name = "User successfully was added to db and registered",
         });
-    }
+    }   
     
     private static IResult HandleLogin(LoginRequest request, IJwtTokenService _service, UserManager<ApplicationUser> userManager)
     {

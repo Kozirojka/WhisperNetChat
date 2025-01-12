@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using WhisperNet.Domain.Enums;
 
 namespace WhisperNet.Domain.Entities;
@@ -10,6 +11,7 @@ public class ChatParticipants
 {
     public int Id { get; set; }
     public int ChatId { get; set; }
+    
     public string? UserId { get; set; }
     
     public ChatRoom? ChatRoom { get; set; }    

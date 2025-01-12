@@ -1,4 +1,4 @@
-namespace WhisperNet.Domain;
+namespace WhisperNet.Infrastructure.Dtos;
 
 public class LoginRequest
 {

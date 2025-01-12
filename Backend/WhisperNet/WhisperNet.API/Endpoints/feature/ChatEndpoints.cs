@@ -12,12 +12,9 @@ public class ChatEndpoints : IEndpoint
         endpoints.MapDelete("/chat", () => "Delete Chat!").WithTags("Chat");
         
         endpoints.MapPut("/chat/delete/{userId}", () => "Delete user!")
-            .RequireAuthorization("Admin")
             .WithTags("Chat");
         
-        
         endpoints.MapPut("/chat/update/{roles}/{userId}", () => "Update user!")
-            .RequireAuthorization("Admin")
             .WithTags("Chat");
         
     }

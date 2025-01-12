@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WhisperNet.Domain;
+using WhisperNet.Domain.Configurations;
 using WhisperNet.Infrastructure.Services.Interfaces;
 
 namespace WhisperNet.Infrastructure.Services.Repositories;

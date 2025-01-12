@@ -1,6 +1,6 @@
 using WhisperNet.Application.Chat.CreatePrivateChat;
 
-namespace WhisperNet.API.Endpoints.CreateChat;
+namespace WhisperNet.API.Endpoints.ChatPrivate.CreatePrivateChat;
 
 internal static class CreateShipmentMappingExtensions
 {

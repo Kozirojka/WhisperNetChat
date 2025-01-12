@@ -18,6 +18,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.3.0" />
+        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.2.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
@@ -27,6 +28,11 @@
       <ProjectReference Include="..\WhisperNet.Application\WhisperNet.Application.csproj" />
       <ProjectReference Include="..\WhisperNet.Domain\WhisperNet.Domain.csproj" />
       <ProjectReference Include="..\WhisperNet.Infrastructure\WhisperNet.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Endpoints\ChatPrivate\DeletePrivateChat\" />
+      <Folder Include="Endpoints\PublicChat\" />
     </ItemGroup>
 
 </Project>
