@@ -7,11 +7,13 @@ public class ChatHub : Hub
 {
     private readonly ILogger<ChatHub> _logger;
     private readonly IMessageService _messageService;
-
-    public ChatHub(ILogger<ChatHub> logger, IMessageService messageService)
+    private readonly IChatService _chatService;
+    
+    public ChatHub(ILogger<ChatHub> logger, IMessageService messageService, IChatService chatService)
     {
         _logger = logger;
         _messageService = messageService;
+        _chatService = chatService;
     }
 
 
@@ -22,6 +24,14 @@ public class ChatHub : Hub
         
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId.ToString());
     }
-    
+
+
+    public async Task SendPrivateMessage(int chatId, string message)
+    {
+        var participantUserId = _chatService.GetParticipantsByChatId(chatId);
+        
+        // ! save message to group
+        await Clients.User(participantUserId).SendAsync("ReceiveMessage", chatId, message);
+    }
 }
 
