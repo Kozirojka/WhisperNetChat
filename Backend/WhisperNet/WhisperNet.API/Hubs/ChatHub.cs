@@ -15,14 +15,10 @@ public class ChatHub(
     IUserService userService)
     : Hub
 {
-    public async Task JoinGroup(int chatId)
-    {
-        logger.LogInformation($"Joining group {chatId}");
-        
-        
-        await Groups.AddToGroupAsync(Context.ConnectionId, chatId.ToString());
+    public override async Task OnConnectedAsync()
+    {        
+        await Clients.All.SendAsync("ReceiveMessage", $"Connected to {Context.ConnectionId}");
     }
-
     
     // ? КОРИСТУВАЧ НАДСИЛА СЮДИ
     public async Task SendPrivateMessage(int chatId, string message)
@@ -30,7 +26,7 @@ public class ChatHub(
         var participantUserId = chatService.GetParticipantByChatId(chatId);
         var senderId = userService.GetUserId(Context.User);
         
-        
+            
         if (participantUserId == null)
         {
             logger.LogInformation("There is no such user");

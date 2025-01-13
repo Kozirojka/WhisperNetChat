@@ -8,7 +8,7 @@ public class ChatCreate : IEndpoint
 {
     public void RegisterEndpoints(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/chat", HandleCreateChatRequest).WithTags("Chat");
+        endpoints.MapPost("/chat", HandleCreateChatRequest).WithTags("Chat").RequireAuthorization();
     }
     
     private static async Task<IResult> HandleCreateChatRequest(CreatePrivateChatRequest request, IMediator mediator, CancellationToken ct)
