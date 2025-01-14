@@ -5,7 +5,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import API_BASE_URL from "./API/base.jsx";
+import API_BASE_URL from "../../API/base.jsx";
 
 const GMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -217,17 +217,17 @@ const Register = () => {
                 className={validMatch || !matchPwd ? "hide" : "invalid"}
               />
             </label>
-            <input
-              type="password"
-              id="confirm_pwd"
-              onChange={(e) => setMatchPwd(e.target.value)}
-              value={matchPwd}
-              required
-              aria-invalid={validMatch ? "false" : "true"}
-              aria-describedby="confirmnote"
-              onFocus={() => setMatchFocus(true)}
-              onBlur={() => setMatchFocus(false)}
-            />
+              <input
+                type="password"
+                id="confirm_pwd"
+                onChange={(e) => setMatchPwd(e.target.value)}
+                value={matchPwd}
+                required
+                aria-invalid={validMatch ? "false" : "true"}
+                aria-describedby="confirmnote"
+                onFocus={() => setMatchFocus(true)}
+                onBlur={() => setMatchFocus(false)}
+              />
             <p
               id="confirmnote"
               className={
