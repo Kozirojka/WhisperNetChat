@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { use } from 'react';
 
 
-const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+const GMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 
@@ -34,7 +34,7 @@ const Register = () => {
 
     useEffect(() => {
 
-        const result = USER_REGEX.test(user);
+        const result = GMAIL_REGEX.test(user);
         console.log(result);
         console.log(user);
         
@@ -61,8 +61,35 @@ const Register = () => {
         setErrMsg('');  
     }, [user, pwd, matchPwd]);
 
+    const HandleSubmit = async (e) => {
+        e. preventDefault();
+
+        const v1 = GMAIL_REGEX.test(user);
+        const v2 = PWD_REGEX.test(pwd);
+
+        if(!v1 || !v2 || pwd !== matchPwd) {
+            setErrMsg('Invalid input. Please correct the errors.');
+            return;
+        }
+
+        console.log(user, pwd);
+
+        setSuccess(true);
+
+
+
+    }
+
     return(
         <>
+            {success ? (
+                <section>
+                    <h1>Success!</h1>
+                    <p>
+                        <a href="#">Sign In</a>
+                    </p>
+                </section>
+            ) : (
             <section>
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live='assertive'>
                     {errMsg}    
@@ -70,15 +97,15 @@ const Register = () => {
 
                 <h1>Register</h1>
 
-                <form>
-                    <label htmlFor="username">
-                        Username:
+                <form onSubmit={HandleSubmit}>
+                    <label htmlFor="Gmail">
+                        Gmail:
                         <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                         <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
                     </label>
                     <input
                         type="text"
-                        id='username'
+                        id='Gmail'
                         ref={userRef}
                         autoComplete="off"
                         onChange={(e) => setUser(e.target.value)}
@@ -141,10 +168,19 @@ const Register = () => {
                         </p>
 
                         <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
-
+                        <p className={success ? "success" : "offscreen"}>Account created successfully!</p>
                 </form>
+
+                <p>
+                    Already registered?<br />
+                    <span className="line">
+                        {/*put router link here*/}
+                        <a href="#">Sign In</a>
+                    </span>
+                </p>
+
             </section>        
-        
+        )}
         </>
     )
 
