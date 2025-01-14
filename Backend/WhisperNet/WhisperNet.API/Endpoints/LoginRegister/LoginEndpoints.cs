@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using WhisperNet.Domain.Entities;
+using WhisperNet.Infrastructure.Dtos;
 using WhisperNet.Infrastructure.Dtos.RegisterHandlerDto;
 using WhisperNet.Infrastructure.Services.Interfaces;
-using LoginRequest = WhisperNet.Infrastructure.Dtos.LoginRequest;
 
 namespace WhisperNet.API.Endpoints.LoginRegister;
 
@@ -28,7 +28,7 @@ public static class LoginEndpoints
 
         var newRegisterUser = model.ToApplicationUser();
         
-        var doesUserExist = userManager.FindByEmailAsync(model.Email).Result;
+        var doesUserExist = await userManager.FindByEmailAsync(model.Email);
         
         if (doesUserExist != null)
         {
@@ -36,7 +36,7 @@ public static class LoginEndpoints
         }
         
         
-        var result = userManager.CreateAsync(newRegisterUser, model.Password).Result;
+        var result = await userManager.CreateAsync(newRegisterUser, model.Password);
 
         if (!result.Succeeded)
         {
@@ -55,7 +55,7 @@ public static class LoginEndpoints
         });
     }   
     
-    private static IResult HandleLogin(LoginRequest request, IJwtTokenService _service, UserManager<ApplicationUser> userManager)
+    private static async Task<IResult> HandleLogin(LoginRequest request, IJwtTokenService _service, UserManager<ApplicationUser> userManager)
     {
         var result = userManager.FindByEmailAsync(request.Email).Result;
 
@@ -63,9 +63,21 @@ public static class LoginEndpoints
         {
             return Results.NotFound("User not found. Please create a new user");
         }
+        var roles = await userManager.GetRolesAsync(result);
         
-        var tokenString = _service.GenerateToken(request.Email, "User");
+        if (roles == null || !roles.Any())
+        {
+            return Results.BadRequest("User does not have any roles assigned");
+        }
         
-        return Results.Ok(tokenString);
+        var role = roles.First();
+        
+        var tokenString = _service.GenerateToken(request.Email, role);
+        
+        return Results.Ok(new
+        {
+            token = tokenString,
+            role = role
+        });
     }
 }
