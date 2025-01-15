@@ -1,6 +1,4 @@
 import {useRef, useState, useEffect } from 'react';
-import API_BASE_URL from '../../API/base';
-const LOGIN_URL = `/login`;
 import useAuth from '../../Hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -35,7 +33,7 @@ const Login = () => {
         e.preventDefault();
 
         try{
-            const responce = await fetch(`${API_BASE_URL}${LOGIN_URL}`, {
+            const responce = await fetch(`https://localhost:7271/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,15 +48,21 @@ const Login = () => {
                 throw new Error('Invalid credentials');
             }
 
-            const data = responce.json();
+            const data = await responce.json();
             console.log(data);
 
             
             const accessToken = data.token;
             const role = data.role;
 
-            setAuth({user, pwd, role, accessToken});
- 
+
+            //тут вибиває nun
+            console.log(accessToken + role + "-------------------------------");
+
+
+            setAuth({user, pwd, roles: [role], accessToken});
+            setUser('');
+            setPwd('');
             navigate(from, {replace: true});
             
 
