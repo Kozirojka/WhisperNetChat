@@ -10,8 +10,8 @@ import Unauthorized from './Components/Unauthorized';
 
 
 const ROLES = {
-  'User': 2001,
-  'Admin': 5010
+  'User': 'User',
+  'Admin': 'Admin'
 }
 function App() {
 
@@ -23,7 +23,6 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/unauthorized" element={<Unauthorized />} />
-
 
           <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
             <Route path='/' element={<Home/>}/>
