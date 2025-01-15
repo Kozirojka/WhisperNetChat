@@ -11,10 +11,14 @@ const useFetchPrivate = () => {
         }
 
         if (!options.headers["Authorization"]) {
+            console.log("added token");
           options.headers["Authorization"] = `Bearer ${auth?.token}`;
         }
 
         if (!options.headers["Content-Type"]) {
+
+            console.log("added content type");
+
           options.headers["Content-Type"] = "application/json";
         }
 
