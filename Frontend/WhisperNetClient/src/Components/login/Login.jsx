@@ -1,19 +1,26 @@
-import {useRef, useState, useEffect, useContext } from 'react';
-import AuthContext from '../../Context/AuthProvider';
+import {useRef, useState, useEffect } from 'react';
 import API_BASE_URL from '../../API/base';
 const LOGIN_URL = `/login`;
+import useAuth from '../../Hooks/useAuth';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
 
 
 const Login = () => {
+    const {setAuth} = useAuth();
 
-    const {setAuth} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
+
+
+
     const userRef = useRef();
     const errRef = useRef();
 
     const [user, setUser] = useState("");
     const [pwd, setPwd] = useState("");
     const [errMsg, setErrMsg] = useState("");
-    const [success, setSuccess] = useState(false);
 
 
     useEffect(() => {
@@ -52,8 +59,7 @@ const Login = () => {
 
             setAuth({user, pwd, role, accessToken});
  
-            setSuccess(true);
-
+            navigate(from, {replace: true});
             
 
         }catch (err) {
@@ -75,15 +81,6 @@ const Login = () => {
 
     return (
         <>
-            {success ? (
-                <section>
-                    <h1>You are logged in!</h1>
-                    <br />
-                    <p>
-                        <a href="#">Go to Home</a>
-                    </p>
-                </section>
-            ) : (
             <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <h1>Sign In</h1>
@@ -118,14 +115,12 @@ const Login = () => {
                 <button>Sign In</button>
             </form>
             <p>
-                Need an Account?<br/>
-                <span>
-                    <a href='#'>Sign up</a>
+                Need an Account?<br />
+                <span className="line">
+                    <Link to="/register">Sign Up</Link>
                 </span>
             </p>
-        
             </section>
-         )}
         </>
     )
 }
