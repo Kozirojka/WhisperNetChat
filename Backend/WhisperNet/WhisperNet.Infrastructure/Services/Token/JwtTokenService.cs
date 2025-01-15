@@ -20,7 +20,7 @@ public class JwtTokenService : IJwtTokenService
                        ?? throw new InvalidOperationException("JWT settings are not configured correctly.");
     }
     
-    public string GenerateToken(string email, string role)
+    public  string GenerateToken(string email, string role)
     {
         var claims = new[]
         {

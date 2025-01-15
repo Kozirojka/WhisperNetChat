@@ -47,16 +47,14 @@ builder.Services.AddScoped<IChatService, ChatService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-            .SetIsOriginAllowed(_ => true);
+        policy.WithOrigins("http://localhost:5174") 
+            .AllowAnyMethod()                  
+            .AllowAnyHeader()                 
+            .AllowCredentials();               
     });
 });
-
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -71,7 +69,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/swagger");
+        return;
+    }
+    await next();
+});
+
+
+app.UseCors("AllowSpecificOrigins");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
