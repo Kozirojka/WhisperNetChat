@@ -12,33 +12,27 @@ const ROLES = {
   User: "User",
   Admin: "Admin",
 };
+
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Layout />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
-        <Route
-          element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}
-        >
-          {/* Робимо батьківський Layout */}
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} /> {/* на "/" */}
-            
-            <Route
-              path="admin"
-              element={
-                <RequireAuth allowedRoles={[ROLES.Admin]}>
-                  <Admin />
-                </RequireAuth>
-              }
-            />
+        <Route path="/" element={<Layout />}>
+          
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+            <Route index element={<Home />} /> 
           </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
+
         </Route>
+
         <Route path="*" element={<Missing />} />
       </Routes>
     </>
